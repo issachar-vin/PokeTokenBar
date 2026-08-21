@@ -157,6 +157,53 @@ struct L {
         t("대표로 설정", "Set as representative", "代表ポケモンに設定", "Establecer como representante", "Définir comme représentatif", "Definir como representante", "Als repräsentativ festlegen")
     }
     var representativeBadge: String { t("대표", "Representative", "代表", "Representante", "Représentatif", "Representante", "Repräsentativ") }
+    // MARK: 난이도
+    var difficultySectionTitle: String { t("난이도", "Difficulty", "難易度", "Dificultad", "Difficulté", "Dificuldade", "Schwierigkeit") }
+    var difficultyGrowthLabel: String { t("성장", "Growth", "成長", "Crecimiento", "Croissance", "Crescimento", "Wachstum") }
+    var difficultyShopLabel: String { t("상점 가격", "Shop prices", "ショップ価格", "Precios de la tienda", "Prix de la boutique", "Preços da loja", "Shop-Preise") }
+    var difficultyHint: String {
+        t("기본값 100% 기준이에요 — 낮추면 빨리 자라고 싸지고, 높이면 그 반대예요",
+          "Percentages of the default balance — lower grows faster and costs less, higher does the opposite",
+          "標準バランスに対する割合です — 下げると早く育ち安くなり、上げるとその逆になります",
+          "Porcentajes del balance predeterminado: si los bajas, crece más rápido y cuesta menos; si los subes, al revés",
+          "Pourcentages de l'équilibrage par défaut — plus bas, la croissance est plus rapide et les prix baissent ; plus haut, l'inverse",
+          "Porcentagens do balanceamento padrão — reduzir faz crescer mais rápido e custar menos; aumentar faz o contrário",
+          "Prozentwerte der Standardbalance — niedriger wächst schneller und kostet weniger, höher bewirkt das Gegenteil")
+    }
+    /// 슬라이더 옆 현재 배율 — 퍼센트 표기(1.0 = 100%). 범위가 0.01%~2000% 라 작은 쪽은 자릿수를
+    /// 더 보여준다(고정 소수점이면 0.01% 와 0.05% 가 똑같이 "0%" 로 뭉갠다).
+    func difficultyValue(_ value: Double) -> String {
+        let percent = value * 100
+        if percent >= 10 { return String(format: "%.0f%%", percent) }
+        if percent >= 1 { return String(format: "%.1f%%", percent) }
+        return String(format: "%.2f%%", percent)
+    }
+    // MARK: 알 스폰 (설정)
+    var spawnEggSectionTitle: String { t("알 스폰", "Spawn Egg", "タマゴを出す", "Generar huevo", "Générer un œuf", "Gerar ovo", "Ei erzeugen") }
+    var spawnEggSpeciesLabel: String { t("종", "Species", "ポケモン", "Especie", "Espèce", "Espécie", "Art") }
+    var spawnEggChoosePlaceholder: String { t("선택…", "Choose…", "選択…", "Elegir…", "Choisir…", "Escolher…", "Auswählen…") }
+    var spawnEggButton: String { t("스폰", "Spawn", "出す", "Generar", "Générer", "Gerar", "Erzeugen") }
+    var spawnEggHint: String {
+        t("지금 포켓몬을 놓아주고 고른 종으로 부화할 알을 놓아요 — 놓아준 포켓몬은 도감에 남아요",
+          "Releases your current Pokémon and leaves an egg that hatches into the chosen species — the released Pokémon stays in your Pokédex",
+          "今のポケモンを手放し、選んだ種でかえるタマゴを置きます — 手放したポケモンは図鑑に残ります",
+          "Libera a tu Pokémon actual y deja un huevo que eclosionará en la especie elegida; el Pokémon liberado permanece en la Pokédex",
+          "Relâche votre Pokémon actuel et laisse un œuf qui éclot dans l'espèce choisie — le Pokémon relâché reste dans le Pokédex",
+          "Liberta o seu Pokémon atual e deixa um ovo que choca na espécie escolhida — o Pokémon libertado permanece na Pokédex",
+          "Lässt dein aktuelles Pokémon frei und legt ein Ei, aus dem die gewählte Art schlüpft — das freigelassene Pokémon bleibt im Pokédex")
+    }
+    var spawnEggUnavailable: String {
+        t("종 목록을 불러오지 못했어요 — 연결을 확인해 주세요",
+          "Couldn't load the species list — check your connection",
+          "種の一覧を読み込めませんでした — 接続を確認してください",
+          "No se pudo cargar la lista de especies: revisa tu conexión",
+          "Impossible de charger la liste des espèces — vérifiez votre connexion",
+          "Não foi possível carregar a lista de espécies — verifique a sua ligação",
+          "Artenliste konnte nicht geladen werden — bitte Verbindung prüfen")
+    }
+    func generationLabel(_ number: Int) -> String {
+        t("\(number)세대", "Gen \(number)", "第\(number)世代", "Gen \(number)", "Gén \(number)", "Ger \(number)", "Gen \(number)")
+    }
     // MARK: 플로팅 펫
     var floatingPetSectionTitle: String { t("플로팅 펫", "Floating Pet", "フローティングペット", "Mascota flotante", "Compagnon flottant", "Mascote flutuante", "Schwebendes Pokémon") }
     var floatingPetEnableLabel: String { t("플로팅 펫 표시", "Show floating pet", "フローティングペットを表示", "Mostrar mascota flotante", "Afficher le compagnon flottant", "Mostrar mascote flutuante", "Schwebendes Pokémon anzeigen") }
@@ -170,6 +217,11 @@ struct L {
           "Dein Pokémon schwebt über dem Bildschirm – zieh es an die gewünschte Stelle")
     }
     var floatingPetSizeLabel: String { t("크기", "Size", "サイズ", "Tamaño", "Taille", "Tamanho", "Größe") }
+    /// 푸터 눈 아이콘의 툴팁(켜져 있을 때) — 켜는 쪽 문구는 floatingPetEnableLabel 을 그대로 쓴다.
+    var floatingPetHideLabel: String {
+        t("플로팅 펫 숨기기", "Hide floating pet", "フローティングペットを隠す", "Ocultar mascota flotante",
+          "Masquer le compagnon flottant", "Ocultar mascote flutuante", "Schwebendes Pokémon ausblenden")
+    }
     /// 지금은 한도 알림만 말풍선으로 뜨지만, 알림 종류가 늘어도 이 라벨은 그대로 쓴다.
     var floatingPetBubbleAlertsLabel: String {
         t("말풍선으로 알림 받기", "Show notifications as bubbles", "通知を吹き出しで表示", "Mostrar notificaciones como globos", "Afficher les notifications en bulles", "Mostrar notificações em balões", "Benachrichtigungen als Sprechblasen anzeigen")
